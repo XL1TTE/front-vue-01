@@ -1,0 +1,22 @@
+budget-calculator:
+  title: Калькулятор бюджета
+  transaction-form:
+    title-input:
+      placeholder: Название
+    amount-input:
+      placeholder: Сумма
+    type-input:
+      placeholder: Доход
+    submit-button:
+      label: Добавить
+  budget-table:
+    title: Операции
+    columns:
+      title: Название
+      type: Тип
+      amount: Сумма
+      actions: Действия
+common:
+  income-word: доход
+  expense-word: траты
+  delete-word: Удалить

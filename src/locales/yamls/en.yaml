@@ -1,0 +1,22 @@
+budget-calculator:
+  title: Budget calculator
+  budget-table:
+    title: Operations
+    columns:
+      title: Name
+      actions: Actions
+      type: Type
+      amount: Sum
+  transaction-form:
+    amount-input:
+      placeholder: Sum
+    submit-button:
+      label: Add
+    title-input:
+      placeholder: Name
+    type-input:
+      placeholder: Income
+common:
+  expense-word: spending
+  income-word: income
+  delete-word: Delete

@@ -12,5 +12,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": ["env.d.ts", "yaml.d.ts", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
 }
