@@ -1,23 +1,33 @@
 
-<script lang="ts">
-import { defineComponent, PropType} from 'vue'
+<script setup lang="ts">
+import type {Transaction} from '../Transaction/Transaction'
+import type {Summary} from './Summary'
 
-import BudgetSummary from '../BudgetSummary.vue'
-import TableItem from './BudgetTableItem.vue'
+import BudgetSummary from './BudgetSummary.vue'
+import TableItem from './Items/Item.vue'
+import { computed } from 'vue'
 
-import {Transaction} from '../Transaction/Transaction'
+interface $props{
+  transactions: Transaction[]
+}
 
-export default defineComponent({
-  name: "BudgetTable",
-  components: {BudgetSummary, TableItem},
-  
-  props: {
-    transactions:{
-      required: false,
-      type: Array as PropType<Transaction[]>
-    }
+const {transactions} = defineProps<$props>();
+
+const summary = computed<Summary>(() => {
+  return {
+    m_totalIncomes: transactions.filter((t) => t.m_type == 'income').reduce((sum, x) => sum + x.m_amount, 0),
+    m_totalExpenses: transactions.filter((t) => t.m_type == 'expense').reduce((sum, x) => sum + x.m_amount, 0)
   }
 })
+
+const onItemRemoveHandler = (itemId: number) => {
+  const itemIndex = transactions.findIndex((e) => e.m_id == itemId);
+  if(itemIndex == -1){return;}
+  
+  transactions.splice(itemIndex, 1);
+}
+
+
 </script>
 
 
@@ -35,12 +45,12 @@ export default defineComponent({
         </tr>
       </thead>
       <tbody >
-        <TableItem :key="item.m_id" v-for="item in transactions" :transaction="item"/>
+        <TableItem @on-remove="onItemRemoveHandler" :key="item.m_id" v-for="item in transactions" :transaction="item"/>
       </tbody>
     </table>
   </div>
 
-  <BudgetSummary />
+  <BudgetSummary :summary="summary"/>
 </template>
 
 

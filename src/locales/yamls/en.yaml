@@ -7,6 +7,13 @@ budget-calculator:
       actions: Actions
       type: Type
       amount: Sum
+    summary:
+      columns:
+        expenses: Expenses
+        balance: Balance
+        income: Income
+      title: Summary
+      warning: Your balance is negative!
   transaction-form:
     amount-input:
       placeholder: Sum
@@ -15,7 +22,8 @@ budget-calculator:
     title-input:
       placeholder: Name
     type-input:
-      placeholder: Income
+      expense: Expense
+      income: Income
 common:
   expense-word: spending
   income-word: income

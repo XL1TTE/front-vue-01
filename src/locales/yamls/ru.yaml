@@ -6,7 +6,8 @@ budget-calculator:
     amount-input:
       placeholder: Сумма
     type-input:
-      placeholder: Доход
+      income: Доход
+      expense: Расход
     submit-button:
       label: Добавить
   budget-table:
@@ -16,6 +17,13 @@ budget-calculator:
       type: Тип
       amount: Сумма
       actions: Действия
+    summary:
+      title: Сводка
+      columns:
+        income: Доходы
+        expenses: Расходы
+        balance: Баланс
+      warning: Ваш баланс отрицательный!
 common:
   income-word: доход
   expense-word: траты

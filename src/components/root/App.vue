@@ -1,29 +1,41 @@
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {useI18n} from 'vue-i18n'
-import { defineComponent, ref} from 'vue'
-import {Transaction} from '../Transaction/Transaction'
+import {onMounted, ref, watch, watchEffect} from 'vue'
+import type {Transaction, TransactionForm} from '../Transaction/Transaction'
 import BudgetForm from '../BudgetForm/BudgetForm.vue'
 import BudgetTable from '../BudgetTable/BudgetTable.vue'
 
 
+const TRANSACTIONS_STORAGE_KEY = 'transactions-storage';
+const transactionStorage = ref<Transaction[]>([])
 
-export default defineComponent({
-  name: 'App',
-  components: {BudgetForm, BudgetTable},
-  setup() {
-    
+  onMounted(() => {
+    const json = localStorage.getItem(TRANSACTIONS_STORAGE_KEY);
+    if(json !== null){
+      try{
+        transactionStorage.value = JSON.parse(json);
+      } catch(e){
+        console.error('Failed to parse saved transactions.')
+      }
+    }
+  });
+  
+  watch(transactionStorage, (newT) => {
+    localStorage.setItem(TRANSACTIONS_STORAGE_KEY, JSON.stringify(newT));
+  }, {deep: 1})
 
-    const t = useI18n();
-    const transactionStorage = ref<Transaction[]>([
-      {m_id: 0, m_title: "Зарплата", m_amount: 50000, m_type:'income'},
-      {m_id: 1, m_title: "Еда", m_amount: 800, m_type:'expense'},
-    ])
-    
-    return {transactionStorage}
-  },
-})
+  
+  const onTransactionFormSubmited = (form: TransactionForm):void =>{
+    const transaction: Transaction = {
+      m_id: Date.now(),
+      m_title: form.title,
+      m_amount: form.amount,
+      m_type: form.type
+    };
+    transactionStorage.value.push(transaction);
+  }
+
 </script>
 
 <template>
@@ -31,7 +43,7 @@ export default defineComponent({
     <h1 class="text-3xl font-bold mb-6 text-center">{{$t('budget-calculator.title')}}</h1>
 
     <div class="max-w-3xl mx-auto space-y-8">
-      <BudgetForm />
+      <BudgetForm @submit="(form) => onTransactionFormSubmited(form)"/>
       <BudgetTable :transactions="transactionStorage"/>
     </div>
   </div>

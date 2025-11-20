@@ -8,4 +8,10 @@ interface Transaction{
     m_amount: number
 }
 
-export type {Transaction, transactionType}
+interface TransactionForm{
+    title: string,
+    amount: number,
+    type: transactionType,
+}
+
+export type {Transaction,TransactionForm, transactionType}
