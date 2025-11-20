@@ -14,9 +14,15 @@ interface $props{
 const {transactions} = defineProps<$props>();
 
 const summary = computed<Summary>(() => {
+  
+  const incomes = transactions.filter((t) => t.m_type == 'income').reduce((sum, x) => sum + x.m_amount, 0);
+  const expenses = transactions.filter((t) => t.m_type == 'expense').reduce((sum, x) => sum + x.m_amount, 0);
+  const balance = incomes - expenses;
+  
   return {
-    m_totalIncomes: transactions.filter((t) => t.m_type == 'income').reduce((sum, x) => sum + x.m_amount, 0),
-    m_totalExpenses: transactions.filter((t) => t.m_type == 'expense').reduce((sum, x) => sum + x.m_amount, 0)
+    m_totalIncomes: incomes,
+    m_totalExpenses: expenses,
+    m_totalBalance: balance 
   }
 })
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import { computed } from 'vue';
 import type { Summary } from './Summary';
 
 
@@ -8,6 +9,9 @@ interface $props{
 }
 
 const props = defineProps<$props>();
+
+
+const isBalanceNegative = computed<boolean>(() => props.summary.m_totalBalance < 0);
 
 </script>
 
@@ -30,6 +34,6 @@ const props = defineProps<$props>();
       </div>
     </div>
 
-    <p class="mt-4 text-red-500 font-medium">⚠️ {{ $t('budget-calculator.budget-table.summary.warning') }}</p>
+    <p v-if="isBalanceNegative" class="mt-4 text-red-500 font-medium">⚠️ {{ $t('budget-calculator.budget-table.summary.warning') }}</p>
   </div>
 </template>
