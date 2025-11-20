@@ -7,16 +7,15 @@ import BudgetSummary from './BudgetSummary.vue'
 import TableItem from './Items/Item.vue'
 import { computed } from 'vue'
 
-interface $props{
-  transactions: Transaction[]
-}
 
-const {transactions} = defineProps<$props>();
+const model = defineModel<Transaction[]>('transitions',{
+  default: () => []
+});
 
 const summary = computed<Summary>(() => {
   
-  const incomes = transactions.filter((t) => t.m_type == 'income').reduce((sum, x) => sum + x.m_amount, 0);
-  const expenses = transactions.filter((t) => t.m_type == 'expense').reduce((sum, x) => sum + x.m_amount, 0);
+  const incomes = model.value.filter((t) => t.m_type == 'income').reduce((sum, x) => sum + x.m_amount, 0);
+  const expenses = model.value.filter((t) => t.m_type == 'expense').reduce((sum, x) => sum + x.m_amount, 0);
   const balance = incomes - expenses;
   
   return {
@@ -27,10 +26,10 @@ const summary = computed<Summary>(() => {
 })
 
 const onItemRemoveHandler = (itemId: number) => {
-  const itemIndex = transactions.findIndex((e) => e.m_id == itemId);
+  const itemIndex = model.value.findIndex((e) => e.m_id == itemId);
   if(itemIndex == -1){return;}
   
-  transactions.splice(itemIndex, 1);
+  model.value.splice(itemIndex, 1);
 }
 
 
@@ -51,7 +50,7 @@ const onItemRemoveHandler = (itemId: number) => {
         </tr>
       </thead>
       <tbody >
-        <TableItem @on-remove="onItemRemoveHandler" :key="item.m_id" v-for="item in transactions" :transaction="item"/>
+        <TableItem @on-remove="onItemRemoveHandler" :key="item.m_id" v-for="(item, index) in model" v-model:transaction="model[index]!"/>
       </tbody>
     </table>
   </div>

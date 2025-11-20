@@ -3,20 +3,17 @@ import {useI18n} from 'vue-i18n'
 import {computed } from 'vue'
 import type {Transaction} from '../../Transaction/Transaction'
 
-interface $props{
-    transaction: Transaction
-}
 
-const {transaction} = defineProps<$props>();
+const model_transaction = defineModel<Transaction>('transaction', {required: true})
 
 const {t} = useI18n();
 
-const emit = defineEmits({
-    onRemove: (id:number) => true
-})
+const emit = defineEmits<{
+    onRemove: [id: number],
+}>()
 
 const typeLocalized = computed<string>(() => {
-    switch(transaction.m_type){
+    switch(model_transaction.value.m_type){
         case 'income':
             return t('common.income-word')
         case 'expense':
@@ -25,8 +22,8 @@ const typeLocalized = computed<string>(() => {
 });
     
 const amountEvaluated = computed<number>(() => {
-    return transaction.m_type == 'income' 
-        ? +transaction.m_amount : -transaction.m_amount;
+    return model_transaction.value.m_type == 'income' 
+        ? +model_transaction.value.m_amount : -model_transaction.value.m_amount;
 });
 
 const onRemove = (itemId:number) =>{
@@ -37,9 +34,9 @@ const onRemove = (itemId:number) =>{
 
 <template>
     <tr class="border-b">
-        <td class="p-2">{{transaction.m_title}}</td>
+        <td class="p-2">{{model_transaction.m_title}}</td>
         <td class="p-2 text-green-600 font-medium">{{typeLocalized}}</td>
         <td class="p-2">{{amountEvaluated}}</td>
-        <td @click="onRemove(transaction.m_id)" class="p-2 text-sm text-red-500 cursor-pointer">{{ $t('common.delete-word') }}</td>
+        <td @click="onRemove(model_transaction.m_id)" class="p-2 text-sm text-red-500 cursor-pointer">{{ $t('common.delete-word') }}</td>
     </tr>
 </template>

@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import {onMounted, ref, watch, watchEffect} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import type {Transaction, TransactionForm} from '../Transaction/Transaction'
 import BudgetForm from '../BudgetForm/BudgetForm.vue'
 import BudgetTable from '../BudgetTable/BudgetTable.vue'
@@ -44,7 +44,7 @@ const transactionStorage = ref<Transaction[]>([])
 
     <div class="max-w-3xl mx-auto space-y-8">
       <BudgetForm @submit="(form) => onTransactionFormSubmited(form)"/>
-      <BudgetTable :transactions="transactionStorage"/>
+      <BudgetTable v-model:transitions="transactionStorage"/>
     </div>
   </div>
 </template>
